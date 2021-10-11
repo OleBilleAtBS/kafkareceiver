@@ -1,0 +1,37 @@
+
+spring:
+  kafka:
+    properties:
+      bootstrap:
+        servers: localhost:9092
+      sasl:
+        mechanism:
+        jaas:
+          config:
+      security:
+        protocol: PLAINTEXT
+      basic:
+        auth:
+          credentials:
+            source:
+      schema:
+        registry:
+          basic:
+            auth:
+              user:
+                info:
+          url: http://localhost:8081
+    consumer:
+      auto-offset-reset: earliest
+      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        specific.avro.reader: true
+        spring.deserializer.value.delegate.class: io.confluent.kafka.serializers.KafkaAvroDeserializer
+        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.LongDeserializer
+      group-id: kafka-playground-receiver
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+server:
+  port: 9010
